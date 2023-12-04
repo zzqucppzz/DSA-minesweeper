@@ -8,6 +8,10 @@ import java.awt.*;
 public class GUI extends JFrame {
 
     int spacing = 5;
+
+    public int mx = -100;
+    public int my = -100;
+
     public GUI(){
         this.setTitle("Minesweeper");
         this.setSize(1286, 829);
@@ -32,6 +36,10 @@ public class GUI extends JFrame {
             g.setColor(Color.gray);
             for (int i = 0; i< 16; i++){
                 for (int j = 0; j < 9; j++){
+                    g.setColor(Color.gray);
+                    if (mx >= spacing+i*80 && mx < spacing+i*80+80-spacing && my >= spacing +j*80+80+26 && my < spacing +j*80+80+80 - 2*spacing){
+                        g.setColor(Color.red);
+                    }
                     g.fillRect(spacing+i*80,spacing +j*80+80, 80 - 2*spacing, 80 - 2*spacing);
 
                 }
@@ -48,6 +56,9 @@ public class GUI extends JFrame {
         @Override
         public void mouseMoved(MouseEvent e){
             System.out.println("The mouse is moving!");
+            mx = e.getX();
+            my = e.getY();
+            System.out.println("X: " + mx + "; Y:" + my);
         }
     }
     public class Click implements MouseListener{
