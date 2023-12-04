@@ -1,4 +1,6 @@
 import javax.swing.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 import java.util.*;
 import java.awt.*;
 
@@ -31,5 +33,13 @@ public class GUI extends JFrame {
 
         }
     }
-    
+    public class Move implements MouseMotionListener{
+        public void mouseDragged (MouseEvent arg0){
+            //TO-DO auto generated method stub
+        }
+
+        public void mouseMoved(MouseEvent arg0){
+
+        }
+    }
 }
