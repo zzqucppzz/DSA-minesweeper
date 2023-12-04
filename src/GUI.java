@@ -20,6 +20,8 @@ public class GUI extends JFrame {
 
         Move move = new Move();
         this.addMouseMotionListener(move);
+        Click click = new Click();
+        this.addMouseListener(click);
 
     }
 
@@ -46,6 +48,30 @@ public class GUI extends JFrame {
         @Override
         public void mouseMoved(MouseEvent e){
             System.out.println("The mouse is moving!");
+        }
+    }
+    public class Click implements MouseListener{
+        @Override
+        public void mouseClicked(MouseEvent arg0){
+            System.out.println("The mouse was clicked!");
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+            // TODO auto-generated method stub
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+            // TODO auto-generated method stub
+        }
+        @Override
+        public void mouseReleased(MouseEvent e){
+            // TODO auto-generated method stub
+        }
+        @Override
+        public void mousePressed(MouseEvent e){
+            // TODO auto-generated method stub
         }
     }
 
