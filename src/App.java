@@ -1,5 +1,12 @@
-public class App {
+public class App implements Runnable {
+
+    GUI gui = new GUI ();
     public static void main(String[] args) throws Exception {
-        System.out.println("Hello, World!");
+        new Thread(new App()).start();
+    }
+    public void run(){
+        while(true){
+            gui.repaint();
+        }
     }
 }
