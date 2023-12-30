@@ -1,6 +1,7 @@
 ## Introduce
 
 Welcome to our final DSA project. 
+
 Our group has 3 people: Pham Phu Quoc, Chau Thanh Phat and Nguyen Thi Minh Chau.
 We has decided to code Minesweeper game by Java for this project. 
 The game mainly coded on Visual Studio Code and pushrd into Github, all the graphics 2D are designed using "Pixel art maker website" by our group members. Hope you will like it.
@@ -8,6 +9,7 @@ The game mainly coded on Visual Studio Code and pushrd into Github, all the grap
 ## Overview
 
 I. Description
+
 When you start the game, you will see a grid of cells on the screen. Each cell represents a hidden tile.
 
 The game features a smiley face button, which serves as a reset button. You can click on it to start a new game or reset the current game.
@@ -21,7 +23,9 @@ If you uncover all the cells that do not contain mines, you win the game.
 The game also includes features like an undo button, which allows you to undo your moves, and a timer that keeps track of the time elapsed during the game.
 
 The game provides visual feedback through different colors and symbols to indicate the state of the cells, such as revealed cells, flagged cells, and mines.
+
 II. Main funtions
+
 - Initialize Game: Sets up the initial state of the game, including the size of the board, number of mines, and positions of mines.
 
 - Render Board: Displays the game board on the screen, showing the hidden cells and their corresponding numbers or mine symbols.
