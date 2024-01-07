@@ -1,10 +1,10 @@
 package Entity;
 
 import java.util.Random;
-
+import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 
-public class Mine {
+public class Mine implements Layout{
 
     private int[][] mines;
     private int[][] neighbors;
@@ -16,9 +16,11 @@ public class Mine {
 
     private int firstX;
     private int firstY;    
-    private int count;
+    private int first;
 
-    Board board;
+    private Board board;
+
+    private int total;
 
     public Mine(int column, int row) {
         this.row = row;
@@ -28,12 +30,25 @@ public class Mine {
         revealed = new boolean[column][row];
         flagged = new boolean[column][row];
     
-        count = 0;
+        this.total = 40;
+        first = 0;
+    }
+
+    public void resize(int column, int row, int total){
+        this.row = row;
+        this.column = column;
+        mines = new int[column][row];
+        neighbors = new int[column][row];
+        revealed = new boolean[column][row];
+        flagged = new boolean[column][row];
+
+        this.total = total;
     }
 
     public void firstClick(int x, int y){
         Random rand = new Random();
 
+        int count = 0;
         for(int i = 0; i < column; i++){
             for(int j = 0; j < row; j++){
                 if (i <= x + 1 && i >= x - 1 && j <= y + 1 && j >= y - 1){
@@ -43,14 +58,34 @@ public class Mine {
                     continue;                    
                 }
 
-                if (rand.nextInt(100) < 20){
-                    mines[i][j] = 1;
-                } else {
+                if (count < total){
+                    if (rand.nextInt(100) < 20){
+                        mines[i][j] = 1;
+                        count++;
+                    } else {
+                        mines[i][j] = 0;
+                    }
+                }
+                else{
                     mines[i][j] = 0;
                 }
+
                 revealed[i][j] = false;
                 flagged[i][j] = false;
             }
+        }
+
+        while (count < total){
+            int a = rand.nextInt(column);
+            int b = rand.nextInt(row);
+            if (a <= x + 1 && a >= x - 1 && b <= y + 1 && b >= y - 1){
+                continue;                    
+            }
+            if (mines[a][b] == 1){
+                continue;
+            }
+            mines[a][b] = 1;
+            count++;
         }
         
         for(int i = 0; i < column; i++){
@@ -90,9 +125,13 @@ public class Mine {
                 neighbors[i][j] = neighs;
             }
         }
-        count = 0;
+        first = 0;
         board.clearStack();
-    }    
+    }   
+    
+    public void draw(Graphics g){
+
+    }
 
     public void mouseMoved(MouseEvent e){
          
@@ -100,11 +139,11 @@ public class Mine {
 
     public void mouseClicked(MouseEvent e){
         if (board.inBoxX() != -1 && board.inBoxY() != -1){
-            if (count == 0){
+            if (first == 0 && !board.getFlagger().getFlagger()){
                 firstX = board.inBoxX();
                 firstY = board.inBoxY();
                 firstClick(firstX, firstY);
-                count++;
+                first++;
                 
             }
         }
@@ -120,8 +159,10 @@ public class Mine {
                 if (a < column && a >= 0 && b < row && b >= 0){
                     if (getMines()[a][b] == 0){
                         if (!getRevealed()[a][b]){
-                            getRevealed()[a][b] = true;
-                            board.pushStask(a,b, Math.max(this.column, this.row)*(Math.max(this.column, this.row) + 1));
+                            if (!getFlagged()[a][b]){
+                                getRevealed()[a][b] = true;
+                                board.pushStask(a,b, board.getConstantMax());
+                            }
                         }
                     }                    
                 }
@@ -129,15 +170,41 @@ public class Mine {
         }
     }
 
-    public int totalMines(){
-        int total = 0;
-        for(int i = 0; i < column; i++){
-            for(int j = 0; j < row; j++){
-                if (mines[i][j] == 1){
-                    total++;
+    public boolean fillCell(int i, int j){
+        
+        if (getNeighbors()[i][j] == 0){
+            return false;
+        }
+
+        int countFlaggedMine = 0;
+        int reveal = 0;
+        for(int a = i - 1; a <= i + 1;a++){
+            for(int b = j - 1; b <= j + 1;b++){
+                if (a == i && b == j){
+                    continue;
+                }
+
+                if (a < column && a >= 0 && b < row && b >= 0){
+                    if (getMines()[a][b] == 1 && getFlagged()[a][b]){
+                        countFlaggedMine++;
+                    }
+                     
+                    if (getRevealed()[a][b]){
+                        reveal++;
+                    }
+                    
                 }
             }
+        }        
+
+        if (countFlaggedMine == getNeighbors()[i][j] && (reveal != (8 - getNeighbors()[i][j]))){
+            return true;
         }
+
+        return false;
+    }
+
+    public int totalMines(){
         return total;
     }
 
@@ -153,6 +220,18 @@ public class Mine {
         return total;
     }
 
+    public int totalMineFlaggered(){
+         int total = 0;
+        for(int i = 0; i < column; i++){
+            for(int j = 0; j < row; j++){
+                if (flagged[i][j] && mines[i][j] == 1){
+                    total++;
+                }
+            }
+        }
+        return total;       
+    }
+
     public boolean isN(int mX, int mY, int cX, int cY){
         if (mX - cX < 2 && mX - cX > -2 && mY - cY < 2 && mY - cY > -2 && mines[cX][cY] == 1 && (mX != cX || mY != cY)){
             return true;
@@ -163,6 +242,10 @@ public class Mine {
 
     public void setBoard(Board value){
         this.board = value;
+    }
+
+    public Board getBoard(){
+        return board;
     }
 
     public int[][] getMines(){
@@ -187,6 +270,10 @@ public class Mine {
 
     public int getColumn(){
         return column;
+    }
+
+    public int getFirst(){
+        return first;
     }
 
 
