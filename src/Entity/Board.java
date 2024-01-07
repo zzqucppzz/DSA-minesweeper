@@ -4,7 +4,7 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.Stack;
 
-public class Board {
+public class Board implements Layout{
 
     private int width;
     private int height;
