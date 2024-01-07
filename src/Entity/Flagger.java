@@ -2,9 +2,12 @@ package Entity;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+
+import utilz.LoadSave;
 
 
-public class Flagger {
+public class Flagger implements Layout{
     
     private int flaggerX;
     private int flaggerY;
@@ -17,25 +20,23 @@ public class Flagger {
     private int mx = 0;
     private int my = 0;
 
+    private BufferedImage imageFlagger;
+
     public Flagger(int flaggerX, int flaggerY){
         this.flaggerX = flaggerX;
         this.flaggerY = flaggerY;
         this.flaggerCenterX = flaggerX + 25;
         this.flaggerCenterY = flaggerY + 25;
 
+        imageFlagger = LoadSave.getLoadSave().GetSpriteAtlas("button/flagsbutton.png").getSubimage(0, 0, 50, 50);
     }
 
-    public void draw(Graphics g){
-        g.setColor(Color.black);
-        g.fillRect(flaggerX + 22,flaggerY + 5, 5, 30);
-        g.fillRect(flaggerX + 10, flaggerY + 30, 30, 10);
-        g.setColor(Color.red);
-        g.fillRect(flaggerX + 12, flaggerY + 5, 10, 10);  
-        g.setColor(Color.black);
-        if (flagger == true){
-            g.setColor(Color.red);
+    public void draw(Graphics g){ 
+        g.drawImage(imageFlagger,flaggerX,flaggerY,null);
+        if (inFlagger()){
+            g.setColor(new Color(0,0,0,50));
+            g.fillOval(flaggerX, flaggerY, 50, 50);
         }
-        g.drawOval(flaggerX ,flaggerY, 50, 50); 
     }
 
     public void mouseMoved(MouseEvent e){
@@ -47,8 +48,10 @@ public class Flagger {
         if (inFlagger()){
             if (!flagger){
                 flagger = true;
+                imageFlagger = LoadSave.getLoadSave().GetSpriteAtlas("button/flagsbutton.png").getSubimage(50*1, 0, 50, 50);
             }else{
                 flagger = false;
+                imageFlagger = LoadSave.getLoadSave().GetSpriteAtlas("button/flagsbutton.png").getSubimage(0, 0, 50, 50);
             }
         }
     }
