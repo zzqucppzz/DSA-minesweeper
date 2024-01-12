@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 
+import Features.AudioPlayer;
 import utilz.LoadSave;
 
 
@@ -31,6 +32,10 @@ public class Flagger implements Layout{
         imageFlagger = LoadSave.getLoadSave().GetSpriteAtlas("button/flagsbutton.png").getSubimage(0, 0, 50, 50);
     }
 
+    public void update(){
+
+    }
+    
     public void draw(Graphics g){ 
         g.drawImage(imageFlagger,flaggerX,flaggerY,null);
         if (inFlagger()){
@@ -53,6 +58,9 @@ public class Flagger implements Layout{
                 flagger = false;
                 imageFlagger = LoadSave.getLoadSave().GetSpriteAtlas("button/flagsbutton.png").getSubimage(0, 0, 50, 50);
             }
+            AudioPlayer temp = new AudioPlayer("button_click", 2);
+            temp.setVolume(1f);
+            temp.playEffect();
         }
     }
 

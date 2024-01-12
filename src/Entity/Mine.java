@@ -127,7 +127,11 @@ public class Mine implements Layout{
         }
         first = 0;
         board.clearStack();
-    }   
+    }  
+    
+    public void update(){
+
+    }
     
     public void draw(Graphics g){
 
@@ -159,10 +163,8 @@ public class Mine implements Layout{
                 if (a < column && a >= 0 && b < row && b >= 0){
                     if (getMines()[a][b] == 0){
                         if (!getRevealed()[a][b]){
-                            if (!getFlagged()[a][b]){
                                 getRevealed()[a][b] = true;
                                 board.pushStask(a,b, board.getConstantMax());
-                            }
                         }
                     }                    
                 }
@@ -177,6 +179,7 @@ public class Mine implements Layout{
         }
 
         int countFlaggedMine = 0;
+        int countFlagged = 0;
         int reveal = 0;
         for(int a = i - 1; a <= i + 1;a++){
             for(int b = j - 1; b <= j + 1;b++){
@@ -188,6 +191,10 @@ public class Mine implements Layout{
                     if (getMines()[a][b] == 1 && getFlagged()[a][b]){
                         countFlaggedMine++;
                     }
+
+                    if (getFlagged()[a][b]){
+                        countFlagged++;
+                    }
                      
                     if (getRevealed()[a][b]){
                         reveal++;
@@ -197,7 +204,7 @@ public class Mine implements Layout{
             }
         }        
 
-        if (countFlaggedMine == getNeighbors()[i][j] && (reveal != (8 - getNeighbors()[i][j]))){
+        if (countFlaggedMine == getNeighbors()[i][j] && (reveal != (8 - getNeighbors()[i][j])) && countFlaggedMine == countFlagged){
             return true;
         }
 
