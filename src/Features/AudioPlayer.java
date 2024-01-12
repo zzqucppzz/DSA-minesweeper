@@ -10,7 +10,7 @@ public class AudioPlayer {
     private Clip[] songs; //list of song
     
 	private int currentSongId; //current song in a list song
-	private float volume = 1f; //volume of sound
+	private float volume = 0.8f; //volume of sound
 	private boolean songMute, effectMute; //state of mute
     private int type; //type to choose between song (1) or effect sound (2)
 
@@ -27,7 +27,7 @@ public class AudioPlayer {
 
 
 	private void loadSongs() {
-		String[] names = {"main_menu","level","playing","win_state"};
+		String[] names = {"sound_track"};
 		songs = new Clip[names.length];
 		for (int i = 0; i < songs.length; i++){
 			songs[i] = getClip(names[i]);
